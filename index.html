@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ランダム画像グリッド</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .grid {
+            display: grid;
+            gap: 1vmin;
+            max-width: 70vmin;
+            margin: 20px auto;
+        }
+        .grid img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+        .button-container {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .reload-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>ランダム画像グリッド</h1>
+
+    <label for="grid-size">グリッドサイズ:</label>
+    <select id="grid-size">
+        <option value="3">3x3</option>
+        <option value="4">4x4</option>
+        <option value="5" selected>5x5</option>
+    </select>
+
+    <div class="grid" id="image-grid"></div>
+
+    <div class="button-container">
+        <button class="reload-button" onclick="confirmReload()">再読み込み</button>
+    </div>
+
+    <script>
+        const images = [
+            "./image/1.jpg",
+            "./image/2.jpg",
+            "./image/3.jpg",
+            "./image/4.jpg",
+            "./image/5.jpg",
+            "./image/6.jpg",
+            "./image/7.jpg",
+            "./image/8.jpg",
+            "./image/9.jpg",
+            "./image/10.jpg",
+            "./image/11.jpg",
+            "./image/12.jpg",
+            "./image/13.jpg",
+            "./image/14.jpg",
+            "./image/15.jpg",
+            "./image/16.jpg",
+            "./image/17.jpg",
+            "./image/18.jpg",
+            "./image/19.jpg",
+            "./image/20.jpg",
+            "./image/21.jpg",
+            "./image/22.jpg",
+            "./image/23.jpg",
+            "./image/24.jpg",
+            "./image/25.jpg",
+        ];
+
+        function createGrid(size) {
+            const gridContainer = document.getElementById("image-grid");
+            gridContainer.innerHTML = '';
+            gridContainer.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+            const availableImages = [...images];
+            for (let i = 0; i < size * size; i++) {
+                if (availableImages.length === 0) break;
+                const randomIndex = Math.floor(Math.random() * availableImages.length);
+                const selectedImage = availableImages.splice(randomIndex, 1)[0];
+
+                const img = document.createElement("img");
+                img.src = selectedImage;
+                gridContainer.appendChild(img);
+            }
+        }
+
+        function confirmReload() {
+            const userConfirmed = confirm("ページを離れると変更が保存されません。よろしいですか？");
+            if (userConfirmed) {
+                const gridSize = parseInt(document.getElementById("grid-size").value);
+                createGrid(gridSize);
+            }
+        }
+
+        document.getElementById("grid-size").addEventListener("change", (event) => {
+            const gridSize = parseInt(event.target.value);
+            createGrid(gridSize);
+        });
+
+        createGrid(5);
+    </script>
+
+</body>
+</html>
